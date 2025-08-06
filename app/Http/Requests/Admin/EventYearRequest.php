@@ -38,7 +38,7 @@ class EventYearRequest extends FormRequest
             'submission_end_date' => 'required|date|after:submission_start_date',
             'show_start' => 'required|date',
             'show_end' => 'required|date|after:show_start',
-            'event_guide_document' => 'nullable|file|mimes:pdf,doc,docx|max:10240', // 10MB max
+            'event_guide_document' => 'nullable|file|mimes:pdf,doc,docx|max:30240', // 10MB max
         ];
     }
 
