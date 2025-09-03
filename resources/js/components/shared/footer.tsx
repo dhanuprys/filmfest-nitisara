@@ -107,27 +107,13 @@ export default function Footer() {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-start justify-center gap-3 md:justify-start">
-                                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-green-600/20">
-                                    <Mail className="h-3 w-3 text-green-400" />
-                                </div>
-                                <div>
-                                    <p className="text-xs text-slate-400 md:text-sm">
-                                        info@nitisara.com
-                                        <br />
-                                        panitia@nitisara.com
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-start justify-center gap-3 md:justify-start">
+                            <div className="flex items-center justify-center gap-3 md:justify-start">
                                 <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-600/20">
                                     <Phone className="h-3 w-3 text-purple-400" />
                                 </div>
                                 <div>
                                     <p className="text-xs text-slate-400 md:text-sm">
-                                        +62 362 22570
-                                        <br />
-                                        +62 812-3456-7890
+                                        +62 858-5891-8243
                                     </p>
                                 </div>
                             </div>

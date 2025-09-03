@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
-import { ContactIcon, InstagramIcon, YoutubeIcon } from 'lucide-react';
+import { ContactIcon, InstagramIcon, PhoneIcon, YoutubeIcon } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import SafeWidth from '../safe-width';
+import { Button } from '../ui/button';
 
 interface Social {
     icon: ReactNode;
@@ -66,10 +67,18 @@ export default function Hero() {
                     Film Festival Nitisara membuka ruang dialog bagi sineas, penonton, partner, dan komunitas. Punya
                     ide, pertanyaan, atau ingin berkolaborasi? Tim kami siap mendengar.
                 </p>
-                <div className="flex justify-center gap-x-2">
+                {/* <div className="flex justify-center gap-x-2">
                     {socials.map(({ icon: SocialIcon, label, url }) => (
                         <div className="rounded-2xl p-4 hover:bg-slate-100">{SocialIcon}</div>
                     ))}
+                </div> */}
+                <div className="flex justify-center gap-x-2">
+                    <a href="https://wa.me/6285858918243">
+                        <Button className="mt-4 !px-6 md:!px-8 !py-8 md:!py-8 bg-white text-black font-bold rounded-full hover:cursor-pointer hover:bg-white/60">
+                            <PhoneIcon className="size-8" />
+                            <span className="text-xl">Hubungi Admin</span>
+                        </Button>
+                    </a>
                 </div>
             </SafeWidth>
         </div>
