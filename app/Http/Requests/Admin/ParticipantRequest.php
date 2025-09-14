@@ -44,11 +44,11 @@ class ParticipantRequest extends FormRequest
 
         // File validation rules (only if files are being uploaded)
         if ($this->hasFile('student_card_file')) {
-            $rules['student_card_file'] = 'file|mimes:pdf,jpg,jpeg,png|max:2048';
+            $rules['student_card_file'] = 'file|mimes:pdf,jpg,jpeg,png|max:4096';
         }
 
         if ($this->hasFile('payment_evidence_file')) {
-            $rules['payment_evidence_file'] = 'file|mimes:pdf,jpg,jpeg,png|max:2048';
+            $rules['payment_evidence_file'] = 'file|mimes:pdf,jpg,jpeg,png|max:4096';
         }
 
         return $rules;

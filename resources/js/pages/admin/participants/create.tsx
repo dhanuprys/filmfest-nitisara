@@ -257,13 +257,12 @@ export default function ParticipantCreate({ event_years, categories }: Participa
                                 <div>
                                     <Label htmlFor="student_card_file">Kartu Mahasiswa/Pelajar</Label>
                                     <div
-                                        className={`mt-2 cursor-pointer rounded-lg border-2 border-dashed p-4 transition-all duration-200 ${
-                                            dragOver === 'student_card_file'
-                                                ? 'border-primary bg-primary/5 scale-105'
-                                                : form.data.student_card_file
-                                                  ? 'border-green-300 bg-green-50'
-                                                  : 'border-primary/30 hover:border-primary/50'
-                                        }`}
+                                        className={`mt-2 cursor-pointer rounded-lg border-2 border-dashed p-4 transition-all duration-200 ${dragOver === 'student_card_file'
+                                            ? 'border-primary bg-primary/5 scale-105'
+                                            : form.data.student_card_file
+                                                ? 'border-green-300 bg-green-50'
+                                                : 'border-primary/30 hover:border-primary/50'
+                                            }`}
                                         onDragOver={(e) => handleDragOver(e, 'student_card_file')}
                                         onDragLeave={handleDragLeave}
                                         onDrop={(e) => handleDrop(e, 'student_card_file')}
@@ -277,7 +276,7 @@ export default function ParticipantCreate({ event_years, categories }: Participa
                                                         ? form.data.student_card_file.name
                                                         : 'Drag & drop file atau klik untuk memilih'}
                                                 </p>
-                                                <p className="text-xs text-gray-500">PDF, JPG, JPEG, PNG (max 2MB)</p>
+                                                <p className="text-xs text-gray-500">PDF, JPG, JPEG, PNG (max 4MB)</p>
                                             </div>
                                         </div>
                                         <input
@@ -300,13 +299,12 @@ export default function ParticipantCreate({ event_years, categories }: Participa
                                 <div>
                                     <Label htmlFor="payment_evidence_file">Bukti Pembayaran</Label>
                                     <div
-                                        className={`mt-2 cursor-pointer rounded-lg border-2 border-dashed p-4 transition-all duration-200 ${
-                                            dragOver === 'payment_evidence_file'
-                                                ? 'border-primary bg-primary/5 scale-105'
-                                                : form.data.payment_evidence_file
-                                                  ? 'border-green-300 bg-green-50'
-                                                  : 'border-primary/30 hover:border-primary/50'
-                                        }`}
+                                        className={`mt-2 cursor-pointer rounded-lg border-2 border-dashed p-4 transition-all duration-200 ${dragOver === 'payment_evidence_file'
+                                            ? 'border-primary bg-primary/5 scale-105'
+                                            : form.data.payment_evidence_file
+                                                ? 'border-green-300 bg-green-50'
+                                                : 'border-primary/30 hover:border-primary/50'
+                                            }`}
                                         onDragOver={(e) => handleDragOver(e, 'payment_evidence_file')}
                                         onDragLeave={handleDragLeave}
                                         onDrop={(e) => handleDrop(e, 'payment_evidence_file')}
@@ -320,7 +318,7 @@ export default function ParticipantCreate({ event_years, categories }: Participa
                                                         ? form.data.payment_evidence_file.name
                                                         : 'Drag & drop file atau klik untuk memilih'}
                                                 </p>
-                                                <p className="text-xs text-gray-500">PDF, JPG, JPEG, PNG (max 2MB)</p>
+                                                <p className="text-xs text-gray-500">PDF, JPG, JPEG, PNG (max 4MB)</p>
                                             </div>
                                         </div>
                                         <input

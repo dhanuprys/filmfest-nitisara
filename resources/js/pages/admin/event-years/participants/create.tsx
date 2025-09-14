@@ -229,7 +229,7 @@ export default function EventYearParticipantCreate({ event_year, categories }: E
                                             <p className="text-sm text-red-600">{errors.student_card_file}</p>
                                         )}
                                         <p className="text-muted-foreground text-xs">
-                                            Format: PDF, JPG, JPEG, PNG (maks. 2MB)
+                                            Format: PDF, JPG, JPEG, PNG (maks. 4MB)
                                         </p>
                                     </div>
 
@@ -253,7 +253,7 @@ export default function EventYearParticipantCreate({ event_year, categories }: E
                                             <p className="text-sm text-red-600">{errors.payment_evidence_file}</p>
                                         )}
                                         <p className="text-muted-foreground text-xs">
-                                            Format: PDF, JPG, JPEG, PNG (maks. 2MB)
+                                            Format: PDF, JPG, JPEG, PNG (maks. 4MB)
                                         </p>
                                     </div>
                                 </div>

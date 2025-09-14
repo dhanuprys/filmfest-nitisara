@@ -435,15 +435,14 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                                 <button
                                                     onClick={() => handleStepChange(step.id)}
                                                     disabled={!canAccess}
-                                                    className={`flex items-center gap-2 rounded-lg px-3 py-2 transition-all duration-200 hover:scale-105 sm:px-4 ${
-                                                        isActive
+                                                    className={`flex items-center gap-2 rounded-lg px-3 py-2 transition-all duration-200 hover:scale-105 sm:px-4 ${isActive
                                                             ? 'bg-primary text-primary-foreground shadow-lg'
                                                             : isComplete
-                                                              ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-                                                              : canAccess
-                                                                ? 'bg-muted hover:bg-muted/80'
-                                                                : 'bg-muted/50 text-muted-foreground cursor-not-allowed'
-                                                    } ${hasErrors && !isActive ? 'ring-2 ring-red-500' : ''}`}
+                                                                ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                                                : canAccess
+                                                                    ? 'bg-muted hover:bg-muted/80'
+                                                                    : 'bg-muted/50 text-muted-foreground cursor-not-allowed'
+                                                        } ${hasErrors && !isActive ? 'ring-2 ring-red-500' : ''}`}
                                                 >
                                                     {isComplete ? (
                                                         <CheckCircle className="h-4 w-4 flex-shrink-0" />
@@ -470,9 +469,8 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                     </TooltipProvider>
                                     {index < steps.length - 1 && (
                                         <div
-                                            className={`mx-1 h-0.5 w-4 transition-all duration-300 sm:mx-2 sm:w-8 ${
-                                                isStepComplete(step.id) ? 'bg-green-300' : 'bg-muted'
-                                            }`}
+                                            className={`mx-1 h-0.5 w-4 transition-all duration-300 sm:mx-2 sm:w-8 ${isStepComplete(step.id) ? 'bg-green-300' : 'bg-muted'
+                                                }`}
                                         />
                                     )}
                                 </div>
@@ -761,13 +759,12 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                             <div className="space-y-4">
                                                 <div
-                                                    className={`rounded-lg border-2 border-dashed p-4 transition-all duration-200 sm:p-6 ${
-                                                        dragOver === 'student_card_file'
+                                                    className={`rounded-lg border-2 border-dashed p-4 transition-all duration-200 sm:p-6 ${dragOver === 'student_card_file'
                                                             ? 'border-primary bg-primary/5 scale-105'
                                                             : studentCardFile
-                                                              ? 'border-green-300 bg-green-50 dark:bg-green-900/20'
-                                                              : 'border-primary/30 hover:border-primary/50'
-                                                    }`}
+                                                                ? 'border-green-300 bg-green-50 dark:bg-green-900/20'
+                                                                : 'border-primary/30 hover:border-primary/50'
+                                                        }`}
                                                     onDragOver={(e) => handleDragOver(e, 'student_card_file')}
                                                     onDragLeave={handleDragLeave}
                                                     onDrop={(e) => handleDrop(e, 'student_card_file')}
@@ -828,13 +825,12 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
 
                                             <div className="space-y-4">
                                                 <div
-                                                    className={`rounded-lg border-2 border-dashed p-4 transition-all duration-200 sm:p-6 ${
-                                                        dragOver === 'payment_evidence_file'
+                                                    className={`rounded-lg border-2 border-dashed p-4 transition-all duration-200 sm:p-6 ${dragOver === 'payment_evidence_file'
                                                             ? 'border-primary bg-primary/5 scale-105'
                                                             : paymentEvidenceFile
-                                                              ? 'border-green-300 bg-green-50 dark:bg-green-900/20'
-                                                              : 'border-primary/30 hover:border-primary/50'
-                                                    }`}
+                                                                ? 'border-green-300 bg-green-50 dark:bg-green-900/20'
+                                                                : 'border-primary/30 hover:border-primary/50'
+                                                        }`}
                                                     onDragOver={(e) => handleDragOver(e, 'payment_evidence_file')}
                                                     onDragLeave={handleDragLeave}
                                                     onDrop={(e) => handleDrop(e, 'payment_evidence_file')}
@@ -901,7 +897,7 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                         <Alert>
                                             <FileText className="h-4 w-4" />
                                             <AlertDescription>
-                                                <strong>Format yang diterima:</strong> PDF, JPG, JPEG, PNG (maksimal 2MB
+                                                <strong>Format yang diterima:</strong> PDF, JPG, JPEG, PNG (maksimal 4MB
                                                 per file)
                                             </AlertDescription>
                                         </Alert>

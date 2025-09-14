@@ -42,8 +42,8 @@ class RegistrationController extends Controller
             'leader_name' => 'required|string|max:100',
             'leader_email' => 'required|email|max:100',
             'leader_whatsapp' => 'required|string|max:20',
-            'student_card_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'payment_evidence_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'student_card_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:4096',
+            'payment_evidence_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:4096',
         ]);
 
         // Get the active event year

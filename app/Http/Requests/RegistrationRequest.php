@@ -27,8 +27,8 @@ class RegistrationRequest extends FormRequest
             'leader_name' => 'required|string|max:100',
             'leader_email' => 'required|email|max:100',
             'leader_whatsapp' => 'required|string|max:20',
-            'student_card_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'payment_evidence_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'student_card_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:4096',
+            'payment_evidence_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:4096',
         ];
     }
 
@@ -81,11 +81,11 @@ class RegistrationRequest extends FormRequest
             'student_card_file.required' => 'File kartu mahasiswa harus diupload.',
             'student_card_file.file' => 'File kartu mahasiswa harus berupa file.',
             'student_card_file.mimes' => 'File kartu mahasiswa harus berformat PDF, JPG, JPEG, atau PNG.',
-            'student_card_file.max' => 'File kartu mahasiswa maksimal 2MB.',
+            'student_card_file.max' => 'File kartu mahasiswa maksimal 4MB.',
             'payment_evidence_file.required' => 'File bukti pembayaran harus diupload.',
             'payment_evidence_file.file' => 'File bukti pembayaran harus berupa file.',
             'payment_evidence_file.mimes' => 'File bukti pembayaran harus berformat PDF, JPG, JPEG, atau PNG.',
-            'payment_evidence_file.max' => 'File bukti pembayaran maksimal 2MB.',
+            'payment_evidence_file.max' => 'File bukti pembayaran maksimal 4MB.',
         ];
     }
 }
