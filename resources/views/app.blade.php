@@ -16,6 +16,20 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ config('app.name', 'Laravel') }}">
+    <meta property="og:description" content="Festival Film Pertiwi - Berani Bersuara, Bijak Membela">
+    <meta property="og:image" content="{{ asset('assets/images/banner.webp') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="{{ config('app.name', 'Laravel') }}">
+    <meta name="twitter:description" content="Festival Film Pertiwi - Berani Bersuara, Bijak Membela">
+    <meta name="twitter:image" content="{{ asset('assets/images/banner.webp') }}">
+
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
