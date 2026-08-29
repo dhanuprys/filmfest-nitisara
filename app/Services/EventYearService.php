@@ -2,29 +2,29 @@
 
 namespace App\Services;
 
-use App\Models\EventYear;
-use App\Models\Ticket;
 use App\Models\Category;
+use App\Models\EventYear;
 use App\Models\Film;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Ticket;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SupportCollection;
 
 class EventYearService
 {
     public function __construct(
         private FileUploadService $fileUploadService
-    ) {
-    }
+    ) {}
 
     /**
      * Get event years with ticket statistics
      */
-    public function getEventYearsWithTicketStats(): \Illuminate\Pagination\LengthAwarePaginator
+    public function getEventYearsWithTicketStats(): LengthAwarePaginator
     {
         $eventYears = EventYear::withCount(['participants', 'categories'])->latest()->paginate(20);
 
         $eventYears->getCollection()->transform(function ($eventYear) {
             $eventYear->ticket_stats = $this->getTicketStats($eventYear->id);
+
             return $eventYear;
         });
 
@@ -63,7 +63,7 @@ class EventYearService
             },
             'categories' => function ($query) {
                 $query->withCount('participants')->latest();
-            }
+            },
         ]);
 
         // Add participants count

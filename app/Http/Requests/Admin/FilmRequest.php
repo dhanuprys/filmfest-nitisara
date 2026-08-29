@@ -52,8 +52,6 @@ class FilmRequest extends FormRequest
         return $rules;
     }
 
-
-
     /**
      * Get custom messages for validator errors.
      */

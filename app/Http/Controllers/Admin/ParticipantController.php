@@ -16,9 +16,9 @@ class ParticipantController extends Controller
     public function index(Request $request)
     {
         $participants = Participant::with(['eventYear', 'category', 'verifiedBy', 'films'])
-            ->when($request->search, fn($query, $search) => $query->search($search))
-            ->when($request->category_id, fn($query, $categoryId) => $query->byCategory($categoryId))
-            ->when($request->event_year_id, fn($query, $eventYearId) => $query->byEventYear($eventYearId))
+            ->when($request->search, fn ($query, $search) => $query->search($search))
+            ->when($request->category_id, fn ($query, $categoryId) => $query->byCategory($categoryId))
+            ->when($request->event_year_id, fn ($query, $eventYearId) => $query->byEventYear($eventYearId))
             ->when($request->status, function ($query, $status) {
                 return match ($status) {
                     'approved' => $query->approved(),
@@ -129,7 +129,7 @@ class ParticipantController extends Controller
 
     public function approve(Participant $participant)
     {
-        if (!$participant->canBeApproved()) {
+        if (! $participant->canBeApproved()) {
             return back()->with('error', 'Status peserta tidak dapat disetujui');
         }
 
@@ -140,7 +140,7 @@ class ParticipantController extends Controller
 
     public function reject(RejectParticipantRequest $request, Participant $participant)
     {
-        if (!$participant->canBeRejected()) {
+        if (! $participant->canBeRejected()) {
             return back()->with('error', 'Status peserta tidak dapat ditolak');
         }
 
@@ -151,7 +151,7 @@ class ParticipantController extends Controller
 
     public function resetStatus(Participant $participant)
     {
-        if (!$participant->canBeReset()) {
+        if (! $participant->canBeReset()) {
             return back()->with('error', 'Status peserta tidak dapat direset');
         }
 
@@ -177,8 +177,8 @@ class ParticipantController extends Controller
     {
         $participants = Participant::with(['category', 'verifiedBy', 'films'])
             ->where('event_year_id', $eventYear->id)
-            ->when($request->search, fn($query, $search) => $query->search($search))
-            ->when($request->category_id, fn($query, $categoryId) => $query->byCategory($categoryId))
+            ->when($request->search, fn ($query, $search) => $query->search($search))
+            ->when($request->category_id, fn ($query, $categoryId) => $query->byCategory($categoryId))
             ->when($request->status, function ($query, $status) {
                 return match ($status) {
                     'approved' => $query->approved(),

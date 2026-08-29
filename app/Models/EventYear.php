@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Carbon\Carbon;
 
 class EventYear extends Model
 {
@@ -51,8 +50,8 @@ class EventYear extends Model
     public function films()
     {
         return $this->hasManyThrough(
-            \App\Models\Film::class,
-            \App\Models\Participant::class,
+            Film::class,
+            Participant::class,
             'event_year_id', // Foreign key on participants table
             'participant_id', // Foreign key on films table
             'id', // Local key on event_years table
@@ -120,7 +119,7 @@ class EventYear extends Model
 
     public function getSubmissionStatusAttribute(): string
     {
-        if (!$this->submission_start_date || !$this->submission_end_date) {
+        if (! $this->submission_start_date || ! $this->submission_end_date) {
             return 'not_set';
         }
 
@@ -143,12 +142,12 @@ class EventYear extends Model
 
     public function hasEventGuide(): bool
     {
-        return !empty($this->event_guide_document);
+        return ! empty($this->event_guide_document);
     }
 
     public function getEventGuideFileName(): ?string
     {
-        if (!$this->event_guide_document) {
+        if (! $this->event_guide_document) {
             return null;
         }
 
@@ -157,7 +156,7 @@ class EventYear extends Model
 
     public function getDaysUntilShow(): int
     {
-        if (!$this->show_start) {
+        if (! $this->show_start) {
             return -1;
         }
 
@@ -166,7 +165,7 @@ class EventYear extends Model
 
     public function getDaysUntilSubmissionEnd(): int
     {
-        if (!$this->submission_end_date) {
+        if (! $this->submission_end_date) {
             return -1;
         }
 
@@ -175,7 +174,7 @@ class EventYear extends Model
 
     public function canBeDeleted(): bool
     {
-        return !$this->hasParticipants();
+        return ! $this->hasParticipants();
     }
 
     public function getStatusBadgeClass(): string

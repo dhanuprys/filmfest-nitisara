@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * Film Model
@@ -20,11 +21,10 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string|null $poster_portrait_file
  * @property string|null $backdrop_file
  * @property int|null $verified_by_user_id
- * @property \Illuminate\Support\Carbon|null $verified_at
+ * @property Carbon|null $verified_at
  * @property int|null $ranking
- *
- * @property-read \App\Models\Participant $participant
- * @property-read \App\Models\User|null $verifiedBy
+ * @property-read Participant $participant
+ * @property-read User|null $verifiedBy
  */
 class Film extends Model
 {
@@ -267,7 +267,7 @@ class Film extends Model
      */
     public function hasOriginalityFile(): bool
     {
-        return !empty($this->originality_file);
+        return ! empty($this->originality_file);
     }
 
     /**
@@ -275,7 +275,7 @@ class Film extends Model
      */
     public function hasPosterLandscapeFile(): bool
     {
-        return !empty($this->poster_landscape_file);
+        return ! empty($this->poster_landscape_file);
     }
 
     /**
@@ -283,7 +283,7 @@ class Film extends Model
      */
     public function hasPosterPortraitFile(): bool
     {
-        return !empty($this->poster_portrait_file);
+        return ! empty($this->poster_portrait_file);
     }
 
     /**
@@ -353,6 +353,6 @@ class Film extends Model
             $bytes /= 1024;
         }
 
-        return round($bytes, $precision) . ' ' . $units[$i];
+        return round($bytes, $precision).' '.$units[$i];
     }
 }

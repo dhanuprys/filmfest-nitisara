@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Film;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -13,19 +12,13 @@ class FilmService
 {
     /**
      * FilmService constructor.
-     *
-     * @param FileUploadService $fileUploadService
      */
     public function __construct(
         private FileUploadService $fileUploadService
-    ) {
-    }
+    ) {}
 
     /**
      * Get films with filters.
-     *
-     * @param array $filters
-     * @return LengthAwarePaginator
      */
     public function getFilmsWithFilters(array $filters): LengthAwarePaginator
     {
@@ -55,9 +48,6 @@ class FilmService
 
     /**
      * Verify a film.
-     *
-     * @param Film $film
-     * @return bool
      */
     public function verify(Film $film): bool
     {
@@ -69,9 +59,6 @@ class FilmService
 
     /**
      * Reject a film.
-     *
-     * @param Film $film
-     * @return bool
      */
     public function reject(Film $film): bool
     {
@@ -83,9 +70,6 @@ class FilmService
 
     /**
      * Delete a film with file cleanup.
-     *
-     * @param Film $film
-     * @return bool
      */
     public function delete(Film $film): bool
     {
@@ -99,10 +83,6 @@ class FilmService
 
     /**
      * Update film ranking.
-     *
-     * @param Film $film
-     * @param array $data
-     * @return bool
      */
     public function updateRanking(Film $film, array $data): bool
     {
@@ -112,9 +92,6 @@ class FilmService
     /**
      * Get film file path for download.
      *
-     * @param Film $film
-     * @param string $fileType
-     * @return string
      * @throws \Exception
      */
     public function getFilmForDownload(Film $film, string $fileType): string
@@ -126,7 +103,7 @@ class FilmService
             default => throw new \InvalidArgumentException('Invalid file type'),
         };
 
-        if (!$filePath || !$this->fileUploadService->exists($filePath)) {
+        if (! $filePath || ! $this->fileUploadService->exists($filePath)) {
             throw new \Exception('File tidak ditemukan');
         }
 
@@ -135,10 +112,6 @@ class FilmService
 
     /**
      * Get download filename for a film file.
-     *
-     * @param Film $film
-     * @param string $fileType
-     * @return string
      */
     public function getDownloadFilename(Film $film, string $fileType): string
     {

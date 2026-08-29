@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\FilmRequest;
 use App\Models\Film;
+use App\Models\Participant;
 use App\Services\FilmService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class FilmController extends Controller
 {
     public function __construct(
         private FilmService $filmService
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {
@@ -25,8 +27,6 @@ class FilmController extends Controller
             'filters' => $request->only(['search', 'status']),
         ]);
     }
-
-
 
     public function show(Film $film)
     {
@@ -109,43 +109,57 @@ class FilmController extends Controller
 
         // Handle file uploads if provided
         if ($request->hasFile('originality_file')) {
+            if ($film->originality_file) {
+                Storage::disk('public')->delete($film->originality_file);
+            }
             $updateData['originality_file'] = $request->file('originality_file')->store('originality-files', 'public');
         }
         if ($request->hasFile('poster_landscape_file')) {
+            if ($film->poster_landscape_file) {
+                Storage::disk('public')->delete($film->poster_landscape_file);
+            }
             $updateData['poster_landscape_file'] = $request->file('poster_landscape_file')->store('posters/landscape', 'public');
         }
         if ($request->hasFile('poster_portrait_file')) {
+            if ($film->poster_portrait_file) {
+                Storage::disk('public')->delete($film->poster_portrait_file);
+            }
             $updateData['poster_portrait_file'] = $request->file('poster_portrait_file')->store('posters/portrait', 'public');
         }
         if ($request->hasFile('backdrop_file')) {
+            if ($film->backdrop_file) {
+                Storage::disk('public')->delete($film->backdrop_file);
+            }
             $updateData['backdrop_file'] = $request->file('backdrop_file')->store('backdrop-files', 'public');
         }
 
-        $film->update($updateData);
+        DB::transaction(function () use ($film, $updateData, $validated) {
+            $film->update($updateData);
 
-        // Handle castings (optional, replace all)
-        if (isset($validated['castings'])) {
-            $film->castings()->delete();
-            foreach ($validated['castings'] as $casting) {
-                $film->castings()->create([
-                    'real_name' => $casting['real_name'],
-                    'film_name' => $casting['film_name'],
-                ]);
+            // Handle castings (optional, replace all)
+            if (isset($validated['castings'])) {
+                $film->castings()->delete();
+                foreach ($validated['castings'] as $casting) {
+                    $film->castings()->create([
+                        'real_name' => $casting['real_name'],
+                        'film_name' => $casting['film_name'],
+                    ]);
+                }
             }
-        }
+        });
 
         return redirect()->route('admin.films.show', $film)
             ->with('success', 'Film berhasil diperbarui.');
     }
 
-    public function createForParticipant(\App\Models\Participant $participant)
+    public function createForParticipant(Participant $participant)
     {
         return Inertia::render('admin/films/create-for-participant', [
             'participant' => $participant->load(['eventYear', 'category']),
         ]);
     }
 
-    public function storeForParticipant(FilmRequest $request, \App\Models\Participant $participant)
+    public function storeForParticipant(FilmRequest $request, Participant $participant)
     {
         $validated = $request->validated();
 
@@ -170,16 +184,33 @@ class FilmController extends Controller
         $validated['verified_by_user_id'] = auth()->id();
         $validated['verified_at'] = now();
 
-        $film = Film::create($validated);
+        try {
+            $film = DB::transaction(function () use ($validated) {
+                $film = Film::create($validated);
 
-        // Handle castings (optional)
-        if (isset($validated['castings'])) {
-            foreach ($validated['castings'] as $casting) {
-                $film->castings()->create([
-                    'real_name' => $casting['real_name'],
-                    'film_name' => $casting['film_name'],
-                ]);
+                // Handle castings (optional)
+                if (isset($validated['castings'])) {
+                    foreach ($validated['castings'] as $casting) {
+                        $film->castings()->create([
+                            'real_name' => $casting['real_name'],
+                            'film_name' => $casting['film_name'],
+                        ]);
+                    }
+                }
+
+                return $film;
+            });
+        } catch (\Exception $e) {
+            $filesToDelete = array_filter([
+                $validated['originality_file'] ?? null,
+                $validated['poster_landscape_file'] ?? null,
+                $validated['poster_portrait_file'] ?? null,
+                $validated['backdrop_file'] ?? null,
+            ]);
+            if (! empty($filesToDelete)) {
+                Storage::disk('public')->delete($filesToDelete);
             }
+            throw $e;
         }
 
         return redirect()->route('admin.participants.show', $participant)

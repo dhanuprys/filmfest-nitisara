@@ -10,8 +10,7 @@ class SubmissionService
 {
     public function __construct(
         private FileUploadService $fileUploadService
-    ) {
-    }
+    ) {}
 
     /**
      * Verify PIN and get participant

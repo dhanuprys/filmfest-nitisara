@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\Category;
-use App\Models\EventYear;
+use App\Models\Film;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -13,8 +14,6 @@ class CategoryService
 {
     /**
      * Get categories with participant count.
-     *
-     * @return LengthAwarePaginator
      */
     public function getCategoriesWithParticipantCount(): LengthAwarePaginator
     {
@@ -23,23 +22,16 @@ class CategoryService
 
     /**
      * Create category for event year.
-     *
-     * @param int $eventYearId
-     * @param array $data
-     * @return Category
      */
     public function createForEventYear(int $eventYearId, array $data): Category
     {
         $data['event_year_id'] = $eventYearId;
+
         return Category::create($data);
     }
 
     /**
      * Update category.
-     *
-     * @param Category $category
-     * @param array $data
-     * @return bool
      */
     public function update(Category $category, array $data): bool
     {
@@ -49,8 +41,6 @@ class CategoryService
     /**
      * Delete category if it has no participants.
      *
-     * @param Category $category
-     * @return bool
      * @throws \Exception
      */
     public function delete(Category $category): bool
@@ -64,11 +54,8 @@ class CategoryService
 
     /**
      * Get categories for event year.
-     *
-     * @param int $eventYearId
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getCategoriesForEventYear(int $eventYearId): \Illuminate\Database\Eloquent\Collection
+    public function getCategoriesForEventYear(int $eventYearId): Collection
     {
         return Category::where('event_year_id', $eventYearId)->get();
     }
@@ -76,9 +63,6 @@ class CategoryService
     /**
      * Ensure category belongs to event year.
      *
-     * @param Category $category
-     * @param int $eventYearId
-     * @return bool
      * @throws \Exception
      */
     public function ensureCategoryBelongsToEventYear(Category $category, int $eventYearId): bool
@@ -92,24 +76,18 @@ class CategoryService
 
     /**
      * Get category with participants.
-     *
-     * @param Category $category
-     * @return Category
      */
     public function getCategoryWithParticipants(Category $category): Category
     {
         return $category->load([
             'participants' => function ($query) {
                 $query->with(['eventYear', 'verifiedBy', 'films'])->latest();
-            }
+            },
         ]);
     }
 
     /**
      * Get category with films and detailed statistics.
-     *
-     * @param Category $category
-     * @return Category
      */
     public function getCategoryWithFilms(Category $category): Category
     {
@@ -117,11 +95,11 @@ class CategoryService
             'eventYear',
             'participants' => function ($query) {
                 $query->with(['verifiedBy'])->latest();
-            }
+            },
         ]);
 
         // Get all films for this category with detailed information
-        $films = \App\Models\Film::whereHas('participant', function ($query) use ($category) {
+        $films = Film::whereHas('participant', function ($query) use ($category) {
             $query->where('category_id', $category->id);
         })
             ->with(['participant', 'votings', 'verifiedBy'])

@@ -6,7 +6,10 @@ use App\Models\Category;
 use App\Models\EventYear;
 use App\Models\Participant;
 use App\Models\ParticipantSession;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class RegistrationController extends Controller
@@ -54,7 +57,7 @@ class RegistrationController extends Controller
             ->orderBy('registration_start')
             ->first();
 
-        if (!$activeEventYear) {
+        if (! $activeEventYear) {
             return back()->withErrors(['general' => 'Tidak ada event yang sedang berlangsung']);
         }
 
@@ -67,23 +70,30 @@ class RegistrationController extends Controller
         $studentCardPath = $request->file('student_card_file')->store('student-cards', 'public');
         $paymentEvidencePath = $request->file('payment_evidence_file')->store('payment-evidence', 'public');
 
-        $participant = Participant::create([
-            'event_year_id' => $activeEventYear->id,
-            'pin' => $pin,
-            'team_name' => $validated['team_name'],
-            'city' => $validated['city'],
-            'company' => $validated['company'],
-            'category_id' => $validated['category_id'],
-            'leader_name' => $validated['leader_name'],
-            'leader_email' => $validated['leader_email'],
-            'leader_whatsapp' => $validated['leader_whatsapp'],
-            'student_card_file' => $studentCardPath,
-            'payment_evidence_file' => $paymentEvidencePath,
-        ]);
+        try {
+            $participant = DB::transaction(function () use ($activeEventYear, $pin, $validated, $studentCardPath, $paymentEvidencePath) {
+                return Participant::create([
+                    'event_year_id' => $activeEventYear->id,
+                    'pin' => $pin,
+                    'team_name' => $validated['team_name'],
+                    'city' => $validated['city'],
+                    'company' => $validated['company'],
+                    'category_id' => $validated['category_id'],
+                    'leader_name' => $validated['leader_name'],
+                    'leader_email' => $validated['leader_email'],
+                    'leader_whatsapp' => $validated['leader_whatsapp'],
+                    'student_card_file' => $studentCardPath,
+                    'payment_evidence_file' => $paymentEvidencePath,
+                ]);
+            });
+        } catch (\Exception $e) {
+            Storage::disk('public')->delete([$studentCardPath, $paymentEvidencePath]);
+            throw $e;
+        }
 
         // Send Telegram notification (silent on error)
         try {
-            app(\App\Services\TelegramService::class)->sendMessage(
+            app(TelegramService::class)->sendMessage(
                 "<b>Registrasi Baru</b>\nTim: {$participant->team_name}\nKetua: {$participant->leader_name}\nEmail: {$participant->leader_email}\nWhatsApp: {$participant->leader_whatsapp}"
             );
         } catch (\Throwable $e) {
@@ -110,15 +120,15 @@ class RegistrationController extends Controller
             ->orderBy('registration_start')
             ->first();
 
-        if (!$activeEventYear) {
+        if (! $activeEventYear) {
             abort(404);
         }
 
         if (
-            !$activeEventYear->event_guide_document
-            || !file_exists(
+            ! $activeEventYear->event_guide_document
+            || ! file_exists(
                 storage_path(
-                    'app/public/' . $activeEventYear->event_guide_document
+                    'app/public/'.$activeEventYear->event_guide_document
                 )
             )
         ) {
@@ -126,7 +136,7 @@ class RegistrationController extends Controller
         }
 
         return response()->download(
-            storage_path('app/public/' . $activeEventYear->event_guide_document)
+            storage_path('app/public/'.$activeEventYear->event_guide_document)
         );
     }
 
@@ -135,7 +145,7 @@ class RegistrationController extends Controller
         $token = $request->query('token');
         $session = ParticipantSession::findByToken($token);
 
-        if (!$session) {
+        if (! $session) {
             return redirect()->route('status.index')
                 ->withErrors(['session' => 'Sesi telah berakhir atau tidak valid. Silakan masukkan PIN untuk melihat status.']);
         }
@@ -159,13 +169,13 @@ class RegistrationController extends Controller
     {
         $participant = Participant::where('pin', $pin)->first();
 
-        if (!$participant) {
+        if (! $participant) {
             abort(404);
         }
 
         // Security Check: Must be admin OR have a valid participant session token
         $isAuthorized = false;
-        
+
         if (auth()->check()) {
             $isAuthorized = true;
         } else {
@@ -179,7 +189,7 @@ class RegistrationController extends Controller
             }
         }
 
-        if (!$isAuthorized) {
+        if (! $isAuthorized) {
             abort(403, 'Unauthorized access to participant files.');
         }
 
@@ -189,20 +199,20 @@ class RegistrationController extends Controller
         switch ($type) {
             case 'student-card':
                 $filePath = $participant->student_card_file;
-                $filename = 'student-card-' . $participant->team_name . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
+                $filename = 'student-card-'.$participant->team_name.'.'.pathinfo($filePath, PATHINFO_EXTENSION);
                 break;
             case 'payment-evidence':
                 $filePath = $participant->payment_evidence_file;
-                $filename = 'payment-evidence-' . $participant->team_name . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
+                $filename = 'payment-evidence-'.$participant->team_name.'.'.pathinfo($filePath, PATHINFO_EXTENSION);
                 break;
             default:
                 abort(404);
         }
 
-        if (!$filePath || !file_exists(storage_path('app/public/' . $filePath))) {
+        if (! $filePath || ! file_exists(storage_path('app/public/'.$filePath))) {
             abort(404);
         }
 
-        return response()->download(storage_path('app/public/' . $filePath), $filename);
+        return response()->download(storage_path('app/public/'.$filePath), $filename);
     }
 }

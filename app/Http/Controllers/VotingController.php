@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\EventYear;
 use App\Models\Film;
 use App\Models\FilmVoting;
@@ -9,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\VotingPagePin;
 use App\Models\VotingPageSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class VotingController extends Controller
@@ -43,7 +45,7 @@ class VotingController extends Controller
                     ->latest('year')
                     ->first();
 
-                if (!$activeEventYear) {
+                if (! $activeEventYear) {
                     return Inertia::render('voting/closed');
                 }
 
@@ -61,7 +63,7 @@ class VotingController extends Controller
                 $filmsByCategory = $films->groupBy('participant.category.name');
 
                 // Get categories for this event year
-                $categories = \App\Models\Category::where('event_year_id', $activeEventYear->id)
+                $categories = Category::where('event_year_id', $activeEventYear->id)
                     ->where('is_active', true)
                     ->get();
 
@@ -102,7 +104,7 @@ class VotingController extends Controller
 
         $pin = VotingPagePin::where('pin', $request->pin)->first();
 
-        if (!$pin) {
+        if (! $pin) {
             return back()->withErrors(['pin' => 'PIN tidak ditemukan']);
         }
 
@@ -139,13 +141,13 @@ class VotingController extends Controller
     {
         $sessionToken = $request->session()->get('voting_session_token');
 
-        if (!$sessionToken) {
+        if (! $sessionToken) {
             return response()->json(['valid' => false, 'reason' => 'no_session']);
         }
 
         $session = VotingPageSession::findByToken($sessionToken);
 
-        if (!$session) {
+        if (! $session) {
             return response()->json(['valid' => false, 'reason' => 'session_not_found']);
         }
 
@@ -155,7 +157,7 @@ class VotingController extends Controller
         }
 
         // Check if the PIN is still active
-        if (!$session->votingPagePin->is_active) {
+        if (! $session->votingPagePin->is_active) {
             return response()->json(['valid' => false, 'reason' => 'pin_deactivated']);
         }
 
@@ -174,6 +176,7 @@ class VotingController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget('voting_session_token');
+
         return redirect()->route('voting.index');
     }
 
@@ -184,18 +187,18 @@ class VotingController extends Controller
     {
         // Check if session is valid
         $sessionToken = $request->session()->get('voting_session_token');
-        if (!$sessionToken) {
+        if (! $sessionToken) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sesi tidak valid'
+                'message' => 'Sesi tidak valid',
             ], 401);
         }
 
         $session = VotingPageSession::findByToken($sessionToken);
-        if (!$session || !$session->isValid()) {
+        if (! $session || ! $session->isValid()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sesi telah berakhir'
+                'message' => 'Sesi telah berakhir',
             ], 401);
         }
 
@@ -210,10 +213,10 @@ class VotingController extends Controller
             ->latest('year')
             ->first();
 
-        if (!$activeEventYear) {
+        if (! $activeEventYear) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak ada event yang aktif saat ini'
+                'message' => 'Tidak ada event yang aktif saat ini',
             ], 400);
         }
 
@@ -225,10 +228,10 @@ class VotingController extends Controller
             })
             ->first();
 
-        if (!$ticket) {
+        if (! $ticket) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kode tiket tidak valid atau tidak untuk event ini'
+                'message' => 'Kode tiket tidak valid atau tidak untuk event ini',
             ], 400);
         }
 
@@ -236,7 +239,7 @@ class VotingController extends Controller
         if ($ticket->used_at) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tiket sudah digunakan untuk voting login'
+                'message' => 'Tiket sudah digunakan untuk voting login',
             ], 400);
         }
 
@@ -250,7 +253,7 @@ class VotingController extends Controller
         ]);
 
         // Get categories for this event year
-        $categories = \App\Models\Category::where('event_year_id', $activeEventYear->id)
+        $categories = Category::where('event_year_id', $activeEventYear->id)
             ->where('is_active', true)
             ->get();
 
@@ -283,18 +286,18 @@ class VotingController extends Controller
     {
         // Check if session is valid
         $sessionToken = $request->session()->get('voting_session_token');
-        if (!$sessionToken) {
+        if (! $sessionToken) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sesi tidak valid'
+                'message' => 'Sesi tidak valid',
             ], 401);
         }
 
         $session = VotingPageSession::findByToken($sessionToken);
-        if (!$session || !$session->isValid()) {
+        if (! $session || ! $session->isValid()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sesi telah berakhir'
+                'message' => 'Sesi telah berakhir',
             ], 401);
         }
 
@@ -310,10 +313,10 @@ class VotingController extends Controller
             ->latest('year')
             ->first();
 
-        if (!$activeEventYear) {
+        if (! $activeEventYear) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak ada event yang aktif saat ini'
+                'message' => 'Tidak ada event yang aktif saat ini',
             ], 400);
         }
 
@@ -325,10 +328,10 @@ class VotingController extends Controller
             })
             ->first();
 
-        if (!$ticket) {
+        if (! $ticket) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kode tiket tidak valid atau tidak untuk event ini'
+                'message' => 'Kode tiket tidak valid atau tidak untuk event ini',
             ], 400);
         }
 
@@ -338,19 +341,19 @@ class VotingController extends Controller
         // Get the film
         $film = Film::with('participant.category')->find($validated['film_id']);
 
-        if (!$film || !$film->verified_by_user_id) {
+        if (! $film || ! $film->verified_by_user_id) {
             return response()->json([
                 'success' => false,
-                'message' => 'Film tidak ditemukan atau belum diverifikasi'
+                'message' => 'Film tidak ditemukan atau belum diverifikasi',
             ], 400);
         }
 
         // Check if film belongs to the current event year
         $filmEventYearId = $film->participant->event_year_id ?? null;
-        if (!$filmEventYearId || $filmEventYearId != $activeEventYear->id) {
+        if (! $filmEventYearId || $filmEventYearId != $activeEventYear->id) {
             return response()->json([
                 'success' => false,
-                'message' => 'Film tidak termasuk dalam event yang aktif'
+                'message' => 'Film tidak termasuk dalam event yang aktif',
             ], 400);
         }
 
@@ -358,12 +361,12 @@ class VotingController extends Controller
         $categoryName = $film->participant->category->name;
 
         $lockKey = "voting_ticket_{$ticket->id}_category_{$categoryName}";
-        $lock = \Illuminate\Support\Facades\Cache::lock($lockKey, 10);
-        
-        if (!$lock->get()) {
+        $lock = Cache::lock($lockKey, 10);
+
+        if (! $lock->get()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sedang memproses vote lain. Silakan coba lagi.'
+                'message' => 'Sedang memproses vote lain. Silakan coba lagi.',
             ], 429);
         }
 
@@ -377,7 +380,7 @@ class VotingController extends Controller
             if ($existingVote) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Kategori ini sudah divote untuk tiket ini'
+                    'message' => 'Kategori ini sudah divote untuk tiket ini',
                 ], 400);
             }
 
@@ -391,7 +394,7 @@ class VotingController extends Controller
         }
 
         // Check if all categories have been voted
-        $categories = \App\Models\Category::where('event_year_id', $activeEventYear->id)
+        $categories = Category::where('event_year_id', $activeEventYear->id)
             ->where('is_active', true)
             ->get();
 

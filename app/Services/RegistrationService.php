@@ -10,8 +10,7 @@ class RegistrationService
 {
     public function __construct(
         private FileUploadService $fileUploadService
-    ) {
-    }
+    ) {}
 
     /**
      * Get active event year for registration

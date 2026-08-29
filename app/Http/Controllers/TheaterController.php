@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Film;
 use App\Models\Category;
 use App\Models\EventYear;
+use App\Models\Film;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -26,13 +26,13 @@ class TheaterController extends Controller
             'participant.eventYear',
             'participant.category',
             'votings',
-            'castings'
+            'castings',
         ];
 
         // Cache additional data (categories, years, and randomized film lists) for 1 hour.
         // This data is not paginated and is the same for all users.
         $additionalData = Cache::remember('theater.index.additional_data', 3600, function () use ($now, $filmRelations) {
-            $baseFilmQuery = fn() => Film::whereNotNull('verified_by_user_id')
+            $baseFilmQuery = fn () => Film::whereNotNull('verified_by_user_id')
                 ->with($filmRelations)
                 ->whereHas('participant.eventYear', function ($query) use ($now) {
                     $query->where('show_end', '<', $now); // Ensure event has finished
@@ -116,7 +116,7 @@ class TheaterController extends Controller
             'participant',
             'participant.eventYear',
             'participant.category',
-            'castings'
+            'castings',
         ])
             ->withCount('votings')
             ->where('id', $filmId)
@@ -131,7 +131,7 @@ class TheaterController extends Controller
             ->with([
                 'participant',
                 'participant.eventYear',
-                'participant.category'
+                'participant.category',
             ])
             ->inRandomOrder()
             ->limit(6)

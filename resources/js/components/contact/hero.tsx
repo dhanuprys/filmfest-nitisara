@@ -74,7 +74,7 @@ export default function Hero() {
                 </div> */}
                 <div className="flex justify-center gap-x-2">
                     <a href="https://wa.me/6285858918243">
-                        <Button className="mt-4 !px-6 md:!px-8 !py-8 md:!py-8 bg-white text-black font-bold rounded-full hover:cursor-pointer hover:bg-white/60">
+                        <Button className="mt-4 rounded-full bg-white !px-6 !py-8 font-bold text-black hover:cursor-pointer hover:bg-white/60 md:!px-8 md:!py-8">
                             <PhoneIcon className="size-8" />
                             <span className="text-xl">Hubungi Admin</span>
                         </Button>

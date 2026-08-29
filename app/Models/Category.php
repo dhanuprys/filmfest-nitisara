@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Category Model
@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $name
  * @property int $event_year_id
  * @property bool $is_active
- *
- * @property-read \App\Models\EventYear $eventYear
+ * @property-read EventYear $eventYear
  */
 class Category extends Model
 {
@@ -169,7 +168,7 @@ class Category extends Model
      */
     public function isInactive(): bool
     {
-        return !$this->is_active;
+        return ! $this->is_active;
     }
 
     /**
@@ -210,7 +209,8 @@ class Category extends Model
     public function getFormattedParticipantCount(): string
     {
         $count = $this->participants_count;
-        return $count . ' peserta';
+
+        return $count.' peserta';
     }
 
     /**
@@ -219,7 +219,8 @@ class Category extends Model
     public function getFormattedFilmCount(): string
     {
         $count = $this->films_count;
-        return $count . ' film';
+
+        return $count.' film';
     }
 
     /**
@@ -228,7 +229,8 @@ class Category extends Model
     public function getFormattedVerifiedFilmCount(): string
     {
         $count = $this->verified_films_count;
-        return $count . ' film terverifikasi';
+
+        return $count.' film terverifikasi';
     }
 
     /**
@@ -237,7 +239,8 @@ class Category extends Model
     public function getFormattedPendingFilmCount(): string
     {
         $count = $this->pending_films_count;
-        return $count . ' film pending';
+
+        return $count.' film pending';
     }
 
     /**
@@ -261,6 +264,6 @@ class Category extends Model
      */
     public function toggleStatus(): bool
     {
-        return $this->update(['is_active' => !$this->is_active]);
+        return $this->update(['is_active' => ! $this->is_active]);
     }
 }

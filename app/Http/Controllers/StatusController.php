@@ -24,7 +24,7 @@ class StatusController extends Controller
             ->with(['eventYear', 'category', 'verifiedBy', 'films'])
             ->first();
 
-        if (!$participant) {
+        if (! $participant) {
             return back()->withErrors(['pin' => 'PIN tidak ditemukan. Silakan cek kembali.']);
         }
 
@@ -42,7 +42,7 @@ class StatusController extends Controller
     {
         $session = ParticipantSession::findByToken($token);
 
-        if (!$session) {
+        if (! $session) {
             return redirect()->route('status.index')
                 ->withErrors(['session' => 'Sesi telah berakhir atau tidak valid. Silakan masukkan PIN kembali.']);
         }
@@ -78,7 +78,7 @@ class StatusController extends Controller
     {
         $session = ParticipantSession::findByToken($token);
 
-        if (!$session) {
+        if (! $session) {
             return response()->json(['error' => 'Sesi tidak valid'], 404);
         }
 

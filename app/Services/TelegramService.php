@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 class TelegramService
 {
     protected string $botToken;
+
     protected string $chatId;
 
     public function __construct(?string $botToken = null, ?string $chatId = null)
@@ -27,20 +28,20 @@ class TelegramService
     /**
      * Send a message to the configured Telegram chat. Errors are caught and silent.
      *
-     * @param string $message
-     * @param string|null $chatId Override default chat ID
+     * @param  string|null  $chatId  Override default chat ID
      * @return bool Success
      */
     public function sendMessage(string $message, ?string $chatId = null): bool
     {
         $chatId = $chatId ?? $this->chatId;
-        if (!$this->botToken || !$chatId) {
+        if (! $this->botToken || ! $chatId) {
             // Optionally log missing config
             Log::warning('TelegramService: Missing bot token or chat id.');
+
             return false;
         }
         try {
-            $response = Http::post(
+            $response = Http::timeout(3)->post(
                 "https://api.telegram.org/bot{$this->botToken}/sendMessage",
                 [
                     'chat_id' => $chatId,
@@ -53,11 +54,13 @@ class TelegramService
                 return true;
             } else {
                 Log::warning('TelegramService: Telegram API error', ['response' => $response->body()]);
+
                 return false;
             }
         } catch (\Throwable $e) {
             // Optionally log the error, but do not throw
             Log::error('TelegramService: Exception sending message', ['error' => $e->getMessage()]);
+
             return false;
         }
     }

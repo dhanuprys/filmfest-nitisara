@@ -13,8 +13,6 @@ class UserService
 {
     /**
      * Get users with pagination.
-     *
-     * @return LengthAwarePaginator
      */
     public function getUsers(): LengthAwarePaginator
     {
@@ -23,9 +21,6 @@ class UserService
 
     /**
      * Create user.
-     *
-     * @param array $data
-     * @return User
      */
     public function create(array $data): User
     {
@@ -38,10 +33,6 @@ class UserService
 
     /**
      * Update user.
-     *
-     * @param User $user
-     * @param array $data
-     * @return bool
      */
     public function update(User $user, array $data): bool
     {
@@ -60,8 +51,6 @@ class UserService
     /**
      * Delete user.
      *
-     * @param User $user
-     * @return bool
      * @throws \Exception
      */
     public function delete(User $user): bool
@@ -75,9 +64,6 @@ class UserService
 
     /**
      * Check if user can be deleted.
-     *
-     * @param User $user
-     * @return bool
      */
     public function canDelete(User $user): bool
     {

@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
-use App\Models\Category;
-use App\Services\CategoryService;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Http\Resources\CategoryResource;
+use App\Models\Category;
+use App\Models\EventYear;
+use App\Services\CategoryService;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
     public function __construct(
         private CategoryService $categoryService
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -29,7 +28,7 @@ class CategoryController extends Controller
     public function create($eventYearId)
     {
         // Load the event year to display its information
-        $eventYear = \App\Models\EventYear::findOrFail($eventYearId);
+        $eventYear = EventYear::findOrFail($eventYearId);
 
         return Inertia::render('admin/categories/create', [
             'eventYearId' => $eventYearId,
@@ -45,7 +44,7 @@ class CategoryController extends Controller
             ->with('success', 'Kategori berhasil dibuat');
     }
 
-    public function show(\App\Models\EventYear $eventYear, \App\Models\Category $category)
+    public function show(EventYear $eventYear, Category $category)
     {
         // Optionally ensure the category belongs to the event year
         if ($category->event_year_id !== $eventYear->id) {

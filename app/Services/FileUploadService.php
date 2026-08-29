@@ -12,7 +12,8 @@ class FileUploadService
      */
     public function upload(UploadedFile $file, string $directory, string $disk = 'public'): string
     {
-        $fileName = time() . '_' . $file->getClientOriginalName();
+        $fileName = time().'_'.$file->getClientOriginalName();
+
         return $file->storeAs($directory, $fileName, $disk);
     }
 
@@ -29,7 +30,7 @@ class FileUploadService
      */
     public function delete(?string $filePath, string $disk = 'public'): bool
     {
-        if (!$filePath) {
+        if (! $filePath) {
             return false;
         }
 

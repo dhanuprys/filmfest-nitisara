@@ -16,7 +16,7 @@ class VotingPagePin extends Model
         'is_active',
         'lifetime_minutes',
         'expires_at',
-        'last_active_at'
+        'last_active_at',
     ];
 
     protected $casts = [
@@ -28,8 +28,6 @@ class VotingPagePin extends Model
 
     /**
      * Generate a unique PIN
-     * 
-     * @return string
      */
     public static function generateUniquePin(): string
     {
@@ -42,12 +40,10 @@ class VotingPagePin extends Model
 
     /**
      * Check if the PIN is valid and active
-     * 
-     * @return bool
      */
     public function isValid(): bool
     {
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return false;
         }
 
@@ -60,8 +56,6 @@ class VotingPagePin extends Model
 
     /**
      * Update the last active timestamp
-     * 
-     * @return void
      */
     public function updateLastActive(): void
     {
@@ -70,8 +64,6 @@ class VotingPagePin extends Model
 
     /**
      * Calculate and set the expiry time based on lifetime_minutes
-     * 
-     * @return void
      */
     public function setExpiryTime(): void
     {

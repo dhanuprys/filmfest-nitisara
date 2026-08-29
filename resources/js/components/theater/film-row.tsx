@@ -8,8 +8,6 @@ interface FilmRowProps {
 }
 
 export function FilmRow({ title, films }: FilmRowProps) {
-    if (!films?.length) return null;
-
     const rowRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -33,6 +31,8 @@ export function FilmRow({ title, films }: FilmRowProps) {
             window.removeEventListener('resize', checkScroll);
         };
     }, [films.length]);
+
+    if (!films?.length) return null;
 
     const handleScrollLeft = () => {
         if (rowRef.current) {

@@ -34,11 +34,6 @@ class VotingPageSession extends Model
 
     /**
      * Create a new session for a voting page pin
-     *
-     * @param VotingPagePin $pin
-     * @param string|null $ipAddress
-     * @param string|null $userAgent
-     * @return self
      */
     public static function createSession(VotingPagePin $pin, ?string $ipAddress = null, ?string $userAgent = null): self
     {
@@ -61,9 +56,6 @@ class VotingPageSession extends Model
 
     /**
      * Find a session by token
-     *
-     * @param string $token
-     * @return self|null
      */
     public static function findByToken(string $token): ?self
     {
@@ -72,8 +64,6 @@ class VotingPageSession extends Model
 
     /**
      * Check if the session is valid
-     *
-     * @return bool
      */
     public function isValid(): bool
     {
@@ -89,8 +79,6 @@ class VotingPageSession extends Model
 
     /**
      * Update the last accessed timestamp
-     *
-     * @return void
      */
     public function updateLastAccessed(): void
     {

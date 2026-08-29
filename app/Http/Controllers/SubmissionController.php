@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EventYear;
 use App\Models\Film;
 use App\Models\Participant;
-use App\Models\EventYear;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -31,7 +33,7 @@ class SubmissionController extends Controller
         }
 
         // If no participant or no event year from participant, check for active event year
-        if (!$eventYear) {
+        if (! $eventYear) {
             $eventYear = EventYear::where('show_start', '<=', now())
                 ->where('show_end', '>=', now())
                 ->orderBy('submission_start_date')
@@ -48,7 +50,7 @@ class SubmissionController extends Controller
                 $submissionStatus = 'coming_soon';
                 $countdownInfo = [
                     'target_date' => $submissionStart,
-                    'message' => 'Submit film akan dibuka dalam:'
+                    'message' => 'Submit film akan dibuka dalam:',
                 ];
             } elseif ($now >= $submissionStart && $now <= $submissionEnd) {
                 $submissionStatus = 'open';
@@ -57,7 +59,7 @@ class SubmissionController extends Controller
                 $submissionStatus = 'ended';
                 $countdownInfo = [
                     'target_date' => $submissionEnd,
-                    'message' => 'Submit film telah ditutup sejak:'
+                    'message' => 'Submit film telah ditutup sejak:',
                 ];
             }
         }
@@ -84,14 +86,14 @@ class SubmissionController extends Controller
 
         $participant = Participant::with('eventYear')->where('pin', $request->pin)->first();
 
-        if (!$participant) {
+        if (! $participant) {
             return back()->withErrors(['pin' => 'PIN tidak valid']);
         }
 
         // Check if participant is verified
         if ($participant->verification_status !== 'approved') {
             return Inertia::render('submission/submission-unverified', [
-                'message' => 'Akun Anda belum diverifikasi oleh admin. Silakan menunggu verifikasi sebelum dapat mengupload film.'
+                'message' => 'Akun Anda belum diverifikasi oleh admin. Silakan menunggu verifikasi sebelum dapat mengupload film.',
             ]);
         }
 
@@ -102,7 +104,7 @@ class SubmissionController extends Controller
             $now >= $eventYear->submission_start_date &&
             $now <= $eventYear->submission_end_date;
 
-        if (!$isSubmissionOpen) {
+        if (! $isSubmissionOpen) {
             return back()->withErrors(['pin' => 'Periode submit film belum dibuka atau sudah berakhir']);
         }
 
@@ -115,14 +117,15 @@ class SubmissionController extends Controller
     public function store(Request $request)
     {
         // Check if participant is in session
-        if (!$request->session()->has('participant_id')) {
+        if (! $request->session()->has('participant_id')) {
             return redirect()->route('submission')->withErrors(['error' => 'Silakan masukkan PIN terlebih dahulu']);
         }
 
         $participant = Participant::with('eventYear')->find($request->session()->get('participant_id'));
 
-        if (!$participant) {
+        if (! $participant) {
             $request->session()->forget('participant_id');
+
             return redirect()->route('submission')->withErrors(['error' => 'Sesi tidak valid']);
         }
 
@@ -133,7 +136,7 @@ class SubmissionController extends Controller
             $now >= $eventYear->submission_start_date &&
             $now <= $eventYear->submission_end_date;
 
-        if (!$isSubmissionOpen) {
+        if (! $isSubmissionOpen) {
             return back()->withErrors(['error' => 'Periode submit film belum dibuka atau sudah berakhir']);
         }
 
@@ -168,31 +171,44 @@ class SubmissionController extends Controller
             $backdropPath = $request->file('backdrop_file')->store('backdrop-files', 'public');
         }
 
-        $film = Film::create([
-            'participant_id' => $participant->id,
-            'title' => $validated['title'],
-            'synopsis' => $validated['synopsis'],
-            'film_url' => $validated['film_url'],
-            'originality_file' => $originalityPath,
-            'poster_landscape_file' => $posterLandscapePath,
-            'poster_portrait_file' => $posterPortraitPath,
-            'backdrop_file' => $backdropPath,
-            'director' => $validated['director'] ?? null,
-            'teaser_url' => $validated['teaser_url'] ?? null,
-        ]);
-        // Handle castings (optional)
-        if (isset($validated['castings'])) {
-            foreach ($validated['castings'] as $casting) {
-                $film->castings()->create([
-                    'real_name' => $casting['real_name'],
-                    'film_name' => $casting['film_name'],
+        try {
+            $film = DB::transaction(function () use ($participant, $validated, $originalityPath, $posterLandscapePath, $posterPortraitPath, $backdropPath) {
+                $film = Film::create([
+                    'participant_id' => $participant->id,
+                    'title' => $validated['title'],
+                    'synopsis' => $validated['synopsis'],
+                    'film_url' => $validated['film_url'],
+                    'originality_file' => $originalityPath,
+                    'poster_landscape_file' => $posterLandscapePath,
+                    'poster_portrait_file' => $posterPortraitPath,
+                    'backdrop_file' => $backdropPath,
+                    'director' => $validated['director'] ?? null,
+                    'teaser_url' => $validated['teaser_url'] ?? null,
                 ]);
+
+                // Handle castings (optional)
+                if (isset($validated['castings'])) {
+                    foreach ($validated['castings'] as $casting) {
+                        $film->castings()->create([
+                            'real_name' => $casting['real_name'],
+                            'film_name' => $casting['film_name'],
+                        ]);
+                    }
+                }
+
+                return $film;
+            });
+        } catch (\Exception $e) {
+            $filesToDelete = array_filter([$originalityPath, $posterLandscapePath, $posterPortraitPath, $backdropPath]);
+            if (! empty($filesToDelete)) {
+                Storage::disk('public')->delete($filesToDelete);
             }
+            throw $e;
         }
 
         // Send Telegram notification (silent on error)
         try {
-            app(\App\Services\TelegramService::class)->sendMessage(
+            app(TelegramService::class)->sendMessage(
                 "<b>Film Baru Dikirim</b>\nTim: {$participant->team_name}\nJudul: {$film->title}\nKetua: {$participant->leader_name}\nEmail: {$participant->leader_email}\nWhatsApp: {$participant->leader_whatsapp}"
             );
         } catch (\Throwable $e) {
@@ -206,13 +222,13 @@ class SubmissionController extends Controller
     public function update(Request $request, Film $film)
     {
         // Check if participant is in session and owns this film
-        if (!$request->session()->has('participant_id')) {
+        if (! $request->session()->has('participant_id')) {
             return redirect()->route('submission')->withErrors(['error' => 'Silakan masukkan PIN terlebih dahulu']);
         }
 
         $participant = Participant::with('eventYear')->find($request->session()->get('participant_id'));
 
-        if (!$participant || $film->participant_id !== $participant->id) {
+        if (! $participant || $film->participant_id !== $participant->id) {
             return redirect()->route('submission')->withErrors(['error' => 'Tidak dapat mengakses film ini']);
         }
 
@@ -223,7 +239,7 @@ class SubmissionController extends Controller
             $now >= $eventYear->submission_start_date &&
             $now <= $eventYear->submission_end_date;
 
-        if (!$isSubmissionOpen) {
+        if (! $isSubmissionOpen) {
             return back()->withErrors(['error' => 'Periode submit film belum dibuka atau sudah berakhir']);
         }
 
@@ -248,19 +264,27 @@ class SubmissionController extends Controller
 
         // Handle file uploads if provided
         if ($request->hasFile('originality_file')) {
-            if ($film->originality_file) Storage::disk('public')->delete($film->originality_file);
+            if ($film->originality_file) {
+                Storage::disk('public')->delete($film->originality_file);
+            }
             $updateData['originality_file'] = $request->file('originality_file')->store('originality-files', 'public');
         }
         if ($request->hasFile('poster_landscape_file')) {
-            if ($film->poster_landscape_file) Storage::disk('public')->delete($film->poster_landscape_file);
+            if ($film->poster_landscape_file) {
+                Storage::disk('public')->delete($film->poster_landscape_file);
+            }
             $updateData['poster_landscape_file'] = $request->file('poster_landscape_file')->store('posters/landscape', 'public');
         }
         if ($request->hasFile('poster_portrait_file')) {
-            if ($film->poster_portrait_file) Storage::disk('public')->delete($film->poster_portrait_file);
+            if ($film->poster_portrait_file) {
+                Storage::disk('public')->delete($film->poster_portrait_file);
+            }
             $updateData['poster_portrait_file'] = $request->file('poster_portrait_file')->store('posters/portrait', 'public');
         }
         if ($request->hasFile('backdrop_file')) {
-            if ($film->backdrop_file) Storage::disk('public')->delete($film->backdrop_file);
+            if ($film->backdrop_file) {
+                Storage::disk('public')->delete($film->backdrop_file);
+            }
             $updateData['backdrop_file'] = $request->file('backdrop_file')->store('backdrop-files', 'public');
         }
 
@@ -283,6 +307,7 @@ class SubmissionController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget('participant_id');
+
         return redirect()->route('submission');
     }
 }

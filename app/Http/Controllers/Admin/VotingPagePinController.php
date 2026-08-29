@@ -122,7 +122,7 @@ class VotingPagePinController extends Controller
     public function toggleActive(VotingPagePin $votingPin)
     {
         $votingPin->update([
-            'is_active' => !$votingPin->is_active,
+            'is_active' => ! $votingPin->is_active,
         ]);
 
         // If activated, set expiry time
@@ -195,6 +195,7 @@ class VotingPagePinController extends Controller
         foreach ($pins as $pin) {
             $pin->setExpiryTime();
         }
+
         return back()->with('success', "$count PIN berhasil diaktifkan");
     }
 
@@ -208,6 +209,7 @@ class VotingPagePinController extends Controller
             'ids.*' => 'integer|exists:voting_page_pins,id',
         ]);
         $count = VotingPagePin::whereIn('id', $request->ids)->update(['is_active' => false]);
+
         return back()->with('success', "$count PIN berhasil dinonaktifkan");
     }
 }

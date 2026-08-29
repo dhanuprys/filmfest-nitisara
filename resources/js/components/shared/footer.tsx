@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { ExternalLink, Heart, Mail, MapPin, Phone, Search } from 'lucide-react';
+import { ExternalLink, Heart, MapPin, Phone, Search } from 'lucide-react';
 import SafeWidth from '../safe-width';
 
 export default function Footer() {
@@ -112,9 +112,7 @@ export default function Footer() {
                                     <Phone className="h-3 w-3 text-purple-400" />
                                 </div>
                                 <div>
-                                    <p className="text-xs text-slate-400 md:text-sm">
-                                        +62 858-5891-8243
-                                    </p>
+                                    <p className="text-xs text-slate-400 md:text-sm">+62 858-5891-8243</p>
                                 </div>
                             </div>
                         </div>

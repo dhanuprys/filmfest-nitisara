@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\EventYear;
+use App\Models\Participant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegistrationRequest extends FormRequest
@@ -38,7 +40,7 @@ class RegistrationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $eventYear = \App\Models\EventYear::where('show_start', '<=', now())
+            $eventYear = EventYear::where('show_start', '<=', now())
                 ->where('show_end', '>=', now())
                 ->where('registration_start', '<=', now())
                 ->where('registration_end', '>=', now())
@@ -46,7 +48,7 @@ class RegistrationRequest extends FormRequest
                 ->first();
 
             if ($eventYear) {
-                $exists = \App\Models\Participant::where('event_year_id', $eventYear->id)
+                $exists = Participant::where('event_year_id', $eventYear->id)
                     ->where('team_name', $this->input('team_name'))
                     ->exists();
 

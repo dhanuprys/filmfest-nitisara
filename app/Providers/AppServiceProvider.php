@@ -9,8 +9,8 @@ use App\Services\FilmService;
 use App\Services\RegistrationService;
 use App\Services\StatisticsService;
 use App\Services\SubmissionService;
-use App\Services\UserService;
 use App\Services\TelegramService;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(RegistrationService::class);
         $this->app->singleton(SubmissionService::class);
         $this->app->singleton(TelegramService::class, function ($app) {
-            return new TelegramService();
+            return new TelegramService;
         });
     }
 

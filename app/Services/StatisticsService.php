@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Participant;
-use App\Models\Film;
 use App\Models\Category;
 use App\Models\EventYear;
+use App\Models\Film;
+use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -14,8 +14,7 @@ class StatisticsService
 {
     public function __construct(
         private EventYearService $eventYearService
-    ) {
-    }
+    ) {}
 
     /**
      * Get dashboard statistics

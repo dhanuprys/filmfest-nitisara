@@ -36,7 +36,7 @@ class ParticipantSession extends Model
 
     public function isActive()
     {
-        return !$this->isExpired();
+        return ! $this->isExpired();
     }
 
     public function updateLastAccessed()

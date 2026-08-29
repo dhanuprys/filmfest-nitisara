@@ -80,7 +80,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Voting Page PINs Management
     Route::resource('voting-pins', VotingPagePinController::class)->parameters([
-        'voting-pins' => 'votingPin'
+        'voting-pins' => 'votingPin',
     ]);
     Route::prefix('voting-pins/{votingPin}')->name('voting-pins.')->group(function () {
         Route::post('toggle-active', [VotingPagePinController::class, 'toggleActive'])->name('toggle-active');

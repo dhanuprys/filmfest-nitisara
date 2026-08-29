@@ -7,7 +7,6 @@ use App\Http\Requests\Admin\EventYearRequest;
 use App\Models\EventYear;
 use App\Services\EventYearService;
 use App\Services\FileUploadService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class EventYearController extends Controller
@@ -15,8 +14,7 @@ class EventYearController extends Controller
     public function __construct(
         private EventYearService $eventYearService,
         private FileUploadService $fileUploadService
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -66,11 +64,11 @@ class EventYearController extends Controller
 
     public function downloadEventGuide(EventYear $eventYear)
     {
-        if (!$eventYear->hasEventGuide()) {
+        if (! $eventYear->hasEventGuide()) {
             return back()->with('error', 'Dokumen panduan event tidak ditemukan');
         }
 
-        if (!$this->fileUploadService->exists($eventYear->event_guide_document)) {
+        if (! $this->fileUploadService->exists($eventYear->event_guide_document)) {
             return back()->with('error', 'File tidak ditemukan');
         }
 

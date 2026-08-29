@@ -51,12 +51,14 @@ class CreateUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
+
             return 1;
         }
 
         // Check if user already exists
         if (User::where('email', $email)->exists()) {
             $this->error('❌ User dengan email tersebut sudah ada!');
+
             return 1;
         }
 
@@ -77,7 +79,8 @@ class CreateUser extends Command
 
             return 0;
         } catch (\Exception $e) {
-            $this->error('❌ Gagal membuat user: ' . $e->getMessage());
+            $this->error('❌ Gagal membuat user: '.$e->getMessage());
+
             return 1;
         }
     }

@@ -12,8 +12,7 @@ class AdminController extends Controller
 {
     public function __construct(
         private StatisticsService $statisticsService
-    ) {
-    }
+    ) {}
 
     public function dashboard()
     {

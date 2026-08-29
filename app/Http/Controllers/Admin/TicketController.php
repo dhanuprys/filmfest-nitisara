@@ -174,7 +174,7 @@ class TicketController extends Controller
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="tickets-' . $eventYear->year . '.csv"',
+            'Content-Disposition' => 'attachment; filename="tickets-'.$eventYear->year.'.csv"',
         ];
 
         $callback = function () use ($tickets) {
@@ -183,7 +183,7 @@ class TicketController extends Controller
 
             foreach ($tickets as $ticket) {
                 $status = $ticket->used_at ? 'Used' : 'Unused';
-                $eventYear = $ticket->eventYear ? $ticket->eventYear->year . ' - ' . $ticket->eventYear->title : 'N/A';
+                $eventYear = $ticket->eventYear ? $ticket->eventYear->year.' - '.$ticket->eventYear->title : 'N/A';
                 fputcsv($file, [
                     $ticket->code,
                     $eventYear,

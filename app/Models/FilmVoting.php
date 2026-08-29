@@ -11,7 +11,6 @@ class FilmVoting extends Model
 
     protected $guarded = [];
 
-
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
@@ -21,5 +20,4 @@ class FilmVoting extends Model
     {
         return $this->belongsTo(Film::class);
     }
-
 }
