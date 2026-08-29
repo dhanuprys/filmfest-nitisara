@@ -1,6 +1,6 @@
 import Hero from '@/components/home/hero';
 import Partnership from '@/components/home/partnership';
-import Winners from '@/components/home/winners';
+
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { type SharedData } from '@/types';
@@ -20,7 +20,7 @@ export default function Home() {
             <div ref={containerRef}>
                 <Header autoHide className="[&>*]:text-white" />
                 <Hero activeEvent={activeEvent} images={images} />
-                <Winners />
+
                 <Partnership />
                 <Footer />
             </div>
