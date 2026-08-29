@@ -409,7 +409,7 @@ export default function StatusShow({ participant, session }: StatusShowProps) {
                                     <div className="grid gap-3 sm:grid-cols-2">
                                         <Button variant="outline" size="sm" asChild className="w-full justify-start">
                                             <a
-                                                href={`/registration/${participant.pin}/download/student-card`}
+                                                href={`/registration/${participant.pin}/download/student-card?token=${session.token}`}
                                                 target="_blank"
                                             >
                                                 <Download className="mr-2 h-4 w-4" />
@@ -418,7 +418,7 @@ export default function StatusShow({ participant, session }: StatusShowProps) {
                                         </Button>
                                         <Button variant="outline" size="sm" asChild className="w-full justify-start">
                                             <a
-                                                href={`/registration/${participant.pin}/download/payment-evidence`}
+                                                href={`/registration/${participant.pin}/download/payment-evidence?token=${session.token}`}
                                                 target="_blank"
                                             >
                                                 <Download className="mr-2 h-4 w-4" />

@@ -205,7 +205,7 @@ class TicketController extends Controller
     private function generateUniqueTicketCode(): string
     {
         do {
-            $code = rand(1000, 9999);
+            $code = strtoupper(Str::random(8));
         } while (Ticket::where('code', $code)->exists());
 
         return $code;

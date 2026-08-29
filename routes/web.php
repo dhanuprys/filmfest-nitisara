@@ -33,7 +33,7 @@ Route::get('/registration', [App\Http\Controllers\RegistrationController::class,
 Route::post('/registration', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 Route::get('/registration/guidebook', [App\Http\Controllers\RegistrationController::class, 'guidebook'])->name('registration.guidebook');
 Route::get('/registration/success', [App\Http\Controllers\RegistrationController::class, 'success'])->name('registration.success');
-Route::get('/registration/{pin}/download/{type}', [App\Http\Controllers\RegistrationController::class, 'download'])->name('registration.download');
+Route::get('/registration/{pin}/download/{type}', [App\Http\Controllers\RegistrationController::class, 'download'])->name('registration.download')->middleware('throttle:60,1');
 
 // AJAX endpoint for checking unique team name for the current event year
 Route::get('/registration/check-team-name', function (Request $request) {
@@ -68,8 +68,8 @@ Route::get('/voting', [App\Http\Controllers\VotingController::class, 'index'])->
 Route::get('/voting/closed', [App\Http\Controllers\VotingController::class, 'closed'])->name('voting.closed');
 Route::post('/voting/verify', [App\Http\Controllers\VotingController::class, 'verifyPin'])->name('voting.verify');
 Route::post('/voting/logout', [App\Http\Controllers\VotingController::class, 'logout'])->name('voting.logout');
-Route::post('/voting/start-session', [App\Http\Controllers\VotingController::class, 'startVotingSession'])->name('voting.start-session');
-Route::post('/voting/vote', [App\Http\Controllers\VotingController::class, 'vote'])->name('voting.vote');
+Route::post('/voting/start-session', [App\Http\Controllers\VotingController::class, 'startVotingSession'])->name('voting.start-session')->middleware('throttle:30,1');
+Route::post('/voting/vote', [App\Http\Controllers\VotingController::class, 'vote'])->name('voting.vote')->middleware('throttle:30,1');
 Route::get('/voting/check-session', [App\Http\Controllers\VotingController::class, 'checkSession'])->name('voting.check-session');
 
 Route::get('/theater', [App\Http\Controllers\TheaterController::class, 'index'])->name('theater.index');

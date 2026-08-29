@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Participant;
 use App\Models\EventYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class SubmissionController extends Controller
@@ -247,15 +248,19 @@ class SubmissionController extends Controller
 
         // Handle file uploads if provided
         if ($request->hasFile('originality_file')) {
+            if ($film->originality_file) Storage::disk('public')->delete($film->originality_file);
             $updateData['originality_file'] = $request->file('originality_file')->store('originality-files', 'public');
         }
         if ($request->hasFile('poster_landscape_file')) {
+            if ($film->poster_landscape_file) Storage::disk('public')->delete($film->poster_landscape_file);
             $updateData['poster_landscape_file'] = $request->file('poster_landscape_file')->store('posters/landscape', 'public');
         }
         if ($request->hasFile('poster_portrait_file')) {
+            if ($film->poster_portrait_file) Storage::disk('public')->delete($film->poster_portrait_file);
             $updateData['poster_portrait_file'] = $request->file('poster_portrait_file')->store('posters/portrait', 'public');
         }
         if ($request->hasFile('backdrop_file')) {
+            if ($film->backdrop_file) Storage::disk('public')->delete($film->backdrop_file);
             $updateData['backdrop_file'] = $request->file('backdrop_file')->store('backdrop-files', 'public');
         }
 

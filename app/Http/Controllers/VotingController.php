@@ -201,7 +201,7 @@ class VotingController extends Controller
 
         // Validate request
         $validated = $request->validate([
-            'ticket_code' => 'required|string|size:4',
+            'ticket_code' => 'required|string|max:8',
         ]);
 
         // Get current active event year
@@ -300,7 +300,7 @@ class VotingController extends Controller
 
         // Validate request
         $validated = $request->validate([
-            'ticket_code' => 'required|string|size:4',
+            'ticket_code' => 'required|string|max:8',
             'film_id' => 'required|exists:films,id',
         ]);
 
@@ -356,24 +356,39 @@ class VotingController extends Controller
 
         // Check if this category has already been voted for this ticket
         $categoryName = $film->participant->category->name;
-        $existingVote = $ticket->filmVotings()
-            ->whereHas('film.participant.category', function ($query) use ($categoryName) {
-                $query->where('name', $categoryName);
-            })
-            ->exists();
 
-        if ($existingVote) {
+        $lockKey = "voting_ticket_{$ticket->id}_category_{$categoryName}";
+        $lock = \Illuminate\Support\Facades\Cache::lock($lockKey, 10);
+        
+        if (!$lock->get()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kategori ini sudah divote untuk tiket ini'
-            ], 400);
+                'message' => 'Sedang memproses vote lain. Silakan coba lagi.'
+            ], 429);
         }
 
-        // Create the vote
-        FilmVoting::create([
-            'ticket_id' => $ticket->id,
-            'film_id' => $film->id,
-        ]);
+        try {
+            $existingVote = $ticket->filmVotings()
+                ->whereHas('film.participant.category', function ($query) use ($categoryName) {
+                    $query->where('name', $categoryName);
+                })
+                ->exists();
+
+            if ($existingVote) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kategori ini sudah divote untuk tiket ini'
+                ], 400);
+            }
+
+            // Create the vote
+            FilmVoting::create([
+                'ticket_id' => $ticket->id,
+                'film_id' => $film->id,
+            ]);
+        } finally {
+            $lock->release();
+        }
 
         // Check if all categories have been voted
         $categories = \App\Models\Category::where('event_year_id', $activeEventYear->id)

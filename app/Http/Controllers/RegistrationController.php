@@ -163,6 +163,26 @@ class RegistrationController extends Controller
             abort(404);
         }
 
+        // Security Check: Must be admin OR have a valid participant session token
+        $isAuthorized = false;
+        
+        if (auth()->check()) {
+            $isAuthorized = true;
+        } else {
+            $token = $request->query('token');
+            if ($token) {
+                $session = ParticipantSession::findByToken($token);
+                if ($session && $session->participant_id === $participant->id && $session->isValid()) {
+                    $isAuthorized = true;
+                    $session->updateLastAccessed();
+                }
+            }
+        }
+
+        if (!$isAuthorized) {
+            abort(403, 'Unauthorized access to participant files.');
+        }
+
         $filePath = null;
         $filename = '';
 

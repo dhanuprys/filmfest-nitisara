@@ -255,7 +255,7 @@ export default function RegistrationSuccess() {
                                                 className="flex items-center gap-2"
                                             >
                                                 <a
-                                                    href={`/registration/${participant.pin}/download/student-card`}
+                                                    href={`/registration/${participant.pin}/download/student-card?token=${session.token}`}
                                                     target="_blank"
                                                 >
                                                     <Download className="h-4 w-4" />
@@ -274,7 +274,7 @@ export default function RegistrationSuccess() {
                                                 className="flex items-center gap-2"
                                             >
                                                 <a
-                                                    href={`/registration/${participant.pin}/download/payment-evidence`}
+                                                    href={`/registration/${participant.pin}/download/payment-evidence?token=${session.token}`}
                                                     target="_blank"
                                                 >
                                                     <Download className="h-4 w-4" />
