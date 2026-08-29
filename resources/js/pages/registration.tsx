@@ -40,7 +40,7 @@ export default function Registration() {
                     <h2 className="mb-2 text-2xl font-bold">Pendaftaran Belum Dibuka</h2>
                     <p className="mb-4 text-gray-600">Pendaftaran akan dibuka dalam:</p>
                     <div className="text-primary mb-8 font-mono text-3xl">
-                        {duration.days()} hari {duration.hours()} jam {duration.minutes()} menit
+                        {Math.floor(duration.asDays())} hari {duration.hours()} jam {duration.minutes()} menit
                     </div>
                 </div>
                 <Footer />
