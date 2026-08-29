@@ -79,7 +79,7 @@ jobs:
           server: ${{ secrets.HPANEL_FTP_SERVER }}
           username: ${{ secrets.HPANEL_FTP_USERNAME }}
           password: ${{ secrets.HPANEL_FTP_PASSWORD }}
-          local-dir: ./ # deploy everything from this working directory
+          local-dir: ./public_html # deploy everything from this working directory
           exclude: |
             **/.git*
             **/.git*/**
