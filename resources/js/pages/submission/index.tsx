@@ -251,7 +251,7 @@ export default function Submission({
 
         if (submissionStatus === 'coming_soon') {
             const pad = (n: number) => n.toString().padStart(2, '0');
-            return `${pad(d.days())}:${pad(d.hours())}:${pad(d.minutes())}:${pad(d.seconds())}`;
+            return `${pad(Math.floor(d.asDays()))}:${pad(d.hours())}:${pad(d.minutes())}:${pad(d.seconds())}`;
         } else {
             return target.format('DD MMMM YYYY, HH:mm');
         }

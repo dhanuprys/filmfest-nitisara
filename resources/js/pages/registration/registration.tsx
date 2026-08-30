@@ -31,7 +31,7 @@ export default function Registration() {
         // --- State: Registration Not Yet Open ---
         const diff = registrationStart.diff(now);
         const d = dayjs.duration(diff);
-        const countdownText = `${d.days()} hari ${d.hours()} jam ${d.minutes()} menit`;
+        const countdownText = `${Math.floor(d.asDays())} hari ${d.hours()} jam ${d.minutes()} menit`;
 
         return (
             <div ref={containerRef}>
