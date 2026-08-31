@@ -65,7 +65,7 @@ export default function FilmsIndex({ films, filters }: FilmsIndexProps) {
     };
 
     return (
-        <AdminLayout title="Film" description="Kelola data film festival">
+        <AdminLayout title="Film" description="Kelola data festival film">
             <Head title="Film - NITISARA Admin" />
 
             <div className="space-y-6">
@@ -74,7 +74,7 @@ export default function FilmsIndex({ films, filters }: FilmsIndexProps) {
                     <div>
                         <h1 className="text-2xl font-bold">Film</h1>
                         <p className="text-muted-foreground">
-                            Verifikasi dan kelola film festival NITISARA. Film baru dapat ditambahkan melalui halaman
+                            Verifikasi dan kelola festival film NITISARA. Film baru dapat ditambahkan melalui halaman
                             peserta.
                         </p>
                     </div>

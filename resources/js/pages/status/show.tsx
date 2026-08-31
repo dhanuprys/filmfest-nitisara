@@ -413,7 +413,7 @@ export default function StatusShow({ participant, session }: StatusShowProps) {
                                                 target="_blank"
                                             >
                                                 <Download className="mr-2 h-4 w-4" />
-                                                Download Kartu Mahasiswa
+                                                Download Kartu Identitas Pelajar
                                             </a>
                                         </Button>
                                         <Button variant="outline" size="sm" asChild className="w-full justify-start">

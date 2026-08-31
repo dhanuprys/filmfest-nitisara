@@ -246,7 +246,7 @@ export default function RegistrationSuccess() {
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-muted-foreground text-sm">Kartu Mahasiswa:</span>
+                                                <span className="text-muted-foreground text-sm">Kartu Identitas Pelajar:</span>
                                             </div>
                                             <Button
                                                 variant="outline"

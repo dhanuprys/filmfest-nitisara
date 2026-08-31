@@ -160,7 +160,7 @@ export default function Hero({ activeEvent, images }: HeroProps) {
                             index === activeSlideIndex && 'opacity-10', // Was opacity-5
                         )}
                         src={`/storage/${image}`}
-                        alt="Film festival background image"
+                        alt="Festival film background image"
                     />
                 ))}
             </div>
@@ -178,7 +178,7 @@ export default function Hero({ activeEvent, images }: HeroProps) {
                 </h1>
 
                 <p className={cn('max-w-3xl text-lg text-white/80 md:text-xl', getTransitionClass(100))}>
-                    Selamat datang di Film Festival Nitisara — sebuah selebrasi sinema yang menyatukan imajinasi,
+                    Selamat datang di Festival Film Nitisara — sebuah selebrasi sinema yang menyatukan imajinasi,
                     budaya, dan suara generasi.
                 </p>
 

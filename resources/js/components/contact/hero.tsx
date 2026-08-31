@@ -64,7 +64,7 @@ export default function Hero() {
             <SafeWidth className="relative z-[1] space-y-4 text-white">
                 <h1 className="font-luckiest text-center text-6xl md:text-8xl">Terhubung Bersama Komunitas Sinema.</h1>
                 <p className="mx-auto max-w-[65rem] text-center md:text-2xl">
-                    Film Festival Nitisara membuka ruang dialog bagi sineas, penonton, partner, dan komunitas. Punya
+                    Festival Film Nitisara membuka ruang dialog bagi sineas, penonton, partner, dan komunitas. Punya
                     ide, pertanyaan, atau ingin berkolaborasi? Tim kami siap mendengar.
                 </p>
                 {/* <div className="flex justify-center gap-x-2">
@@ -72,11 +72,17 @@ export default function Hero() {
                         <div className="rounded-2xl p-4 hover:bg-slate-100">{SocialIcon}</div>
                     ))}
                 </div> */}
-                <div className="flex justify-center gap-x-2">
-                    <a href="https://wa.me/6285858918243">
+                <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                    <a href="https://wa.me/6285792379979" target="_blank" rel="noopener noreferrer">
                         <Button className="mt-4 rounded-full bg-white !px-6 !py-8 font-bold text-black hover:cursor-pointer hover:bg-white/60 md:!px-8 md:!py-8">
                             <PhoneIcon className="size-8" />
-                            <span className="text-xl">Hubungi Admin</span>
+                            <span className="text-xl">GITA (+62 857-9237-9979)</span>
+                        </Button>
+                    </a>
+                    <a href="https://wa.me/628885944941" target="_blank" rel="noopener noreferrer">
+                        <Button className="mt-4 rounded-full bg-white !px-6 !py-8 font-bold text-black hover:cursor-pointer hover:bg-white/60 md:!px-8 md:!py-8">
+                            <PhoneIcon className="size-8" />
+                            <span className="text-xl">NABIL (+62 888-5944-941)</span>
                         </Button>
                     </a>
                 </div>

@@ -255,7 +255,7 @@ export default function ParticipantCreate({ event_years, categories }: Participa
 
                                 {/* Student Card File */}
                                 <div>
-                                    <Label htmlFor="student_card_file">Kartu Mahasiswa/Pelajar</Label>
+                                    <Label htmlFor="student_card_file">Kartu Identitas Pelajar</Label>
                                     <div
                                         className={`mt-2 cursor-pointer rounded-lg border-2 border-dashed p-4 transition-all duration-200 ${
                                             dragOver === 'student_card_file'

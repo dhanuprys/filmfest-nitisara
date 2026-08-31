@@ -264,7 +264,7 @@ export default function Submission({
                     title: 'Submit Film Belum Dibuka',
                     subtitle: 'Periode submit film akan segera dibuka',
                     description:
-                        'Film Festival NITISARA sedang mempersiapkan sistem submit film. Silakan cek kembali nanti untuk mengirim karya Anda.',
+                        'Festival Film NITISARA sedang mempersiapkan sistem submit film. Silakan cek kembali nanti untuk mengirim karya Anda.',
                     icon: Clock,
                     color: 'text-yellow-600',
                     bgColor: 'bg-gradient-to-br from-yellow-50 to-orange-50',
@@ -279,7 +279,7 @@ export default function Submission({
                     title: 'Submit Film Telah Ditutup',
                     subtitle: 'Periode submit film telah berakhir',
                     description:
-                        'Terima kasih atas partisipasi Anda dalam Film Festival NITISARA. Semua film telah diterima dan sedang dalam proses penilaian.',
+                        'Terima kasih atas partisipasi Anda dalam Festival Film NITISARA. Semua film telah diterima dan sedang dalam proses penilaian.',
                     icon: AlertTriangle,
                     color: 'text-red-600',
                     bgColor: 'bg-gradient-to-br from-red-50 to-pink-50',

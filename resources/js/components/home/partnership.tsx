@@ -8,7 +8,7 @@ export default function Partnership() {
                     Partner with Purpose — Connect Through Cinema
                 </h2>
                 <p className="text-center md:text-xl">
-                    Kami berterima kasih kepada seluruh mitra yang telah mendukung perjalanan Film Festival Nitisara.
+                    Kami berterima kasih kepada seluruh mitra yang telah mendukung perjalanan Festival Film Nitisara.
                     Bersama Anda, cerita ini bisa terus dinyalakan.
                 </p>
             </SafeWidth>

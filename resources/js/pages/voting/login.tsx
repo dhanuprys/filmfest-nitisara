@@ -37,7 +37,7 @@ export default function VotingLogin() {
                         <div className="bg-primary/10 mb-4 inline-flex items-center justify-center rounded-full p-4">
                             <Film className="text-primary h-10 w-10" />
                         </div>
-                        <h1 className="text-3xl font-bold">Film Festival Voting</h1>
+                        <h1 className="text-3xl font-bold">Festival Film Voting</h1>
                         <p className="mt-2 text-gray-500 dark:text-gray-400">
                             Masukkan PIN untuk Page Login (akses halaman voting)
                         </p>

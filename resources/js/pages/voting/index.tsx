@@ -548,7 +548,7 @@ export default function VotingIndex({ filmsByCategory, categories, session, acti
                                 <Film className="h-8 w-8 text-gray-600" />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900">Film Festival Voting</h1>
+                                <h1 className="text-2xl font-bold text-gray-900">Festival Film Voting</h1>
                                 {activeEventYear && (
                                     <p className="text-sm text-gray-500">
                                         {activeEventYear.year} - {activeEventYear.title}
@@ -947,7 +947,7 @@ export default function VotingIndex({ filmsByCategory, categories, session, acti
                                     </div>
                                     <h3 className="mb-2 text-2xl font-bold text-gray-900">Voting Selesai!</h3>
                                     <p className="mb-6 text-gray-600">
-                                        Terima kasih telah berpartisipasi dalam voting film festival
+                                        Terima kasih telah berpartisipasi dalam voting festival film
                                     </p>
 
                                     <Card className="mx-auto max-w-md border-0 bg-white shadow-lg">
@@ -1115,7 +1115,7 @@ export default function VotingIndex({ filmsByCategory, categories, session, acti
                         <DialogDescription className="text-base">
                             <div className="space-y-4">
                                 <p className="text-gray-700">
-                                    Terima kasih telah berpartisipasi dalam voting film festival.
+                                    Terima kasih telah berpartisipasi dalam voting festival film.
                                 </p>
 
                                 <div className="rounded-lg border border-green-200 bg-green-50 p-4">

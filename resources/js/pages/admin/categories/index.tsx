@@ -17,14 +17,14 @@ interface CategoriesIndexProps {
 
 export default function CategoriesIndex({ categories }: CategoriesIndexProps) {
     return (
-        <AdminLayout title="Kategori" description="Kelola kategori film festival">
+        <AdminLayout title="Kategori" description="Kelola kategori festival film">
             <Head title="Kategori - NITISARA Admin" />
 
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">Kategori</h1>
-                        <p className="text-muted-foreground">Kelola kategori film festival NITISARA</p>
+                        <p className="text-muted-foreground">Kelola kategori festival film NITISARA</p>
                     </div>
                     <Button asChild>
                         <Link href={route('admin.categories.create')}>

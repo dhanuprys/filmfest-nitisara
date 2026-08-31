@@ -210,7 +210,7 @@ export default function EventYearParticipantCreate({ event_year, categories }: E
                             <CardContent className="space-y-6">
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <div className="space-y-2">
-                                        <Label htmlFor="student_card_file">Kartu Mahasiswa</Label>
+                                        <Label htmlFor="student_card_file">Kartu Identitas Pelajar</Label>
                                         <div className="relative">
                                             <Input
                                                 id="student_card_file"

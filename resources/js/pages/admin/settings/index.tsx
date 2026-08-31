@@ -16,7 +16,7 @@ interface SettingsIndexProps {
 
 export default function SettingsIndex({ settings }: SettingsIndexProps) {
     const { data, setData, post, processing, errors } = useForm({
-        festival_name: settings.festival_name?.value || 'NITISARA Film Festival',
+        festival_name: settings.festival_name?.value || 'NITISARA Festival Film',
         festival_description: settings.festival_description?.value || '',
         contact_email: settings.contact_email?.value || '',
         contact_phone: settings.contact_phone?.value || '',
@@ -68,7 +68,7 @@ export default function SettingsIndex({ settings }: SettingsIndexProps) {
                                         id="festival_name"
                                         value={data.festival_name}
                                         onChange={(e) => setData('festival_name', e.target.value)}
-                                        placeholder="NITISARA Film Festival"
+                                        placeholder="NITISARA Festival Film"
                                     />
                                     {errors.festival_name && (
                                         <p className="text-sm text-red-600">{errors.festival_name}</p>

@@ -24,7 +24,8 @@ export default function Footer() {
                             Bergabunglah dengan ribuan talenta muda dalam perjalanan sinematik yang tak terlupakan.
                         </p>
                         <p className="mb-6 text-center text-sm text-slate-400 md:text-left">
-                            A product of <span className="font-semibold text-white">PTI Undiksha</span>
+                            A product of{' '}
+                            <span className="font-semibold text-white">Fakultas Teknik dan Kejuruan Undiksha</span>
                         </p>
                         <div className="flex flex-col gap-3 md:flex-row md:gap-4">
                             <Link

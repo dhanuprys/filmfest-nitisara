@@ -18,7 +18,7 @@ export default function VotingClosed() {
 
                     <div className="flex items-center justify-center">
                         <Film className="mr-2 h-6 w-6 text-gray-500" />
-                        <span className="text-lg font-medium text-gray-500">Film Festival</span>
+                        <span className="text-lg font-medium text-gray-500">Festival Film</span>
                     </div>
                 </div>
             </div>

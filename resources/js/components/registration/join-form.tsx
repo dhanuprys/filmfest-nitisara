@@ -775,10 +775,10 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                                     <div className="text-center">
                                                         <GraduationCap className="text-primary mx-auto mb-4 h-10 w-10 sm:h-12 sm:w-12" />
                                                         <h4 className="mb-2 text-sm font-semibold sm:text-base">
-                                                            Kartu Mahasiswa
+                                                            Kartu Identitas Pelajar
                                                         </h4>
                                                         <p className="text-muted-foreground mb-4 text-xs sm:text-sm">
-                                                            Upload kartu mahasiswa ketua tim
+                                                            Upload kartu identitas pelajar ketua tim
                                                         </p>
                                                         {studentCardFile ? (
                                                             <div className="space-y-2">
@@ -984,7 +984,7 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                                             <GraduationCap className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
                                                             <div className="min-w-0 flex-1">
                                                                 <span className="block text-gray-500">
-                                                                    Kartu Mahasiswa:
+                                                                    Kartu Identitas Pelajar:
                                                                 </span>
                                                                 {studentCardFile ? (
                                                                     <span className="block truncate font-medium text-gray-900">
