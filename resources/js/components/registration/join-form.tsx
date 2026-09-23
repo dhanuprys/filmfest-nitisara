@@ -844,9 +844,17 @@ export default function JoinForm({ eventYears, categories }: JoinFormProps) {
                                                         <h4 className="mb-2 text-sm font-semibold sm:text-base">
                                                             Bukti Pembayaran
                                                         </h4>
-                                                        <p className="text-muted-foreground mb-4 text-xs sm:text-sm">
-                                                            Upload bukti pembayaran biaya pendaftaran
-                                                        </p>
+                                                        <div className="text-muted-foreground mb-4 flex flex-col gap-1 text-xs sm:text-sm">
+                                                            <p>Silakan transfer biaya pendaftaran ke:</p>
+                                                            <div className="rounded-md bg-blue-50 p-2 text-blue-900 dark:bg-blue-900/20 dark:text-blue-100">
+                                                                <span className="font-bold">Bank BRI</span>
+                                                                <br />
+                                                                <span className="font-mono text-sm sm:text-base font-bold">461301022511539</span>
+                                                                <br />
+                                                                <span>a.n. I Gusti Ayu Agung Gita Udiani</span>
+                                                            </div>
+                                                            <p className="mt-1">Kemudian upload bukti transfer di sini.</p>
+                                                        </div>
                                                         {paymentEvidenceFile ? (
                                                             <div className="space-y-2">
                                                                 <div className="flex items-center justify-between rounded-lg bg-white p-2 sm:p-3 dark:bg-gray-800">
